@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test nyc --reporter=text-summary mocha --recursive --throw-deprecation",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "repository": {
     "type": "git",
@@ -26,6 +28,7 @@
     "chai": "^4.1.2",
     "coveralls": "^2.13.1",
     "cross-env": "^5.0.5",
+    "eslint": "^4.6.1",
     "mocha": "^3.5.3",
     "nyc": "^11.2.1"
   },
