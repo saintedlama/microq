@@ -1,6 +1,7 @@
 test
 examples
 coverage
+.nyc_output
 docs
 .idea
 .gitattributes
