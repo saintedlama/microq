@@ -1,0 +1,36 @@
+{
+  "name": "microq",
+  "version": "1.0.0",
+  "description": "Micro job queue built on mongo",
+  "main": "index.js",
+  "scripts": {
+    "test": "cross-env NODE_ENV=test nyc --reporter=text-summary mocha --recursive --throw-deprecation",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saintedlama/microq.git"
+  },
+  "keywords": [
+    "mq",
+    "queue",
+    "job queue"
+  ],
+  "author": "Christoph Walcher <christoph.walcher@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saintedlama/microq/issues"
+  },
+  "homepage": "https://github.com/saintedlama/microq#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "coveralls": "^2.13.1",
+    "cross-env": "^5.0.5",
+    "mocha": "^3.5.3",
+    "nyc": "^11.2.1"
+  },
+  "dependencies": {
+    "debug": "^3.0.1",
+    "mongojs": "^2.4.1"
+  }
+}
