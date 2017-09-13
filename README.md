@@ -1,5 +1,8 @@
 # microq
 
+[![Build Status](https://travis-ci.org/saintedlama/microq.svg?branch=master)](https://travis-ci.org/saintedlama/microq)
+[![Coverage Status](https://coveralls.io/repos/github/saintedlama/microq/badge.svg?branch=master)](https://coveralls.io/github/saintedlama/microq?branch=master)
+
 Microq is a simple but reliable message queue built on mongodb.
 
 ## Installation
