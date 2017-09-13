@@ -35,7 +35,7 @@ describe('microq', function() {
 
     await queue.enqueue('jobName', { foo: 'bar' });
     
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       queue.start({
         jobName: (params) => {
           expect(params).to.deep.equal({ foo: 'bar' });
@@ -52,7 +52,7 @@ describe('microq', function() {
     
     await jobs.update({ _id: job._id}, { $set: { status: 'dequeued' }});
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       queue.start({
         jobName: resolve
       }, { 
@@ -65,7 +65,7 @@ describe('microq', function() {
   it('should fire empty events if no jobs found in queue', async () => {
     const queue = microq(connectionUrl);
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       queue.on('empty', resolve);
 
       queue.start({ jobName: resolve }, { interval: 500 });
@@ -75,13 +75,13 @@ describe('microq', function() {
   it('should fire failed events if a job fails', async () => {
     const queue = microq(connectionUrl);
 
-    const job = await queue.enqueue('jobName', { foo: 'bar' });
+    await queue.enqueue('jobName', { foo: 'bar' });
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       queue.on('failed', resolve);
 
       queue.start({
-        jobName: (params) => {
+        jobName: () => {
           throw new Error('does not work');
         }
       }, { interval: 500 });
@@ -91,9 +91,9 @@ describe('microq', function() {
   it('should fire completed events if a job completes without an error', async () => {
     const queue = microq(connectionUrl);
 
-    const job = await queue.enqueue('jobName', { foo: 'bar' });
+    await queue.enqueue('jobName', { foo: 'bar' });
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       queue.on('completed', resolve);
 
       queue.start({ jobName: resolve }, { interval: 500 });
@@ -103,7 +103,7 @@ describe('microq', function() {
   it('should allow querying for jobs', async () => {
     const queue = microq(connectionUrl);
 
-    const job = await queue.enqueue('jobName', { foo: 'bar' });
+    await queue.enqueue('jobName', { foo: 'bar' });
 
     const enqueuedJobs = await queue.query();
     expect(enqueuedJobs).to.have.length(1);
