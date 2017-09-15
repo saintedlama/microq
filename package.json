@@ -34,6 +34,6 @@
   },
   "dependencies": {
     "debug": "^3.0.1",
-    "mongojs": "^2.4.1"
+    "mongoist": "^1.0.1"
   }
 }

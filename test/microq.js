@@ -1,13 +1,12 @@
 const { expect } = require('chai');
-const promisifyCollection = require('../lib/promisify-collection');
 
-const mongojs = require('mongojs');
+const mongoist = require('mongoist');
 const microq = require('..');
 
-const connectionUrl = 'localhost/microqtests';
+const connectionUrl = 'mongodb://localhost/microqtests';
 
-const db = mongojs(connectionUrl);
-const jobs = promisifyCollection(db.jobs);
+const db = mongoist(connectionUrl);
+const jobs = db.jobs;
 
 describe('microq', function() {
   this.timeout(5000);
