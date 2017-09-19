@@ -45,6 +45,22 @@ queue.start({
 
 Microq supports workers to use async/await or to return Promises. A worker may throw an exception to fail. The queue will NOT shut down if a worker fails.
 
+Worker function should return a promise or should be defined as async functions. 
+
+```javascript
+async foo(params, job) => {
+  await something();
+
+  await somthingOther();
+
+  // ...
+  return;
+}
+```
+
+In case the worker queue is started with option `parallel` set to `false` this allows the worker queue to wait until
+the job finishes and to set the status of the job correctly.
+
 ## API
 
 ### `microq(connectionUrl, [options])`
@@ -67,8 +83,9 @@ Starts the queue with workers passed in the workers object. A worker must be a f
 
 **Options**
 
-* *recover* (Boolean) - Defines if jobs that are in status *dequeued* should be recovered when starting the queue.  Defaults to true.
-* *interval* (number in milliseconds) - Defines the poll interval. Defaults to 5000ms.
+* *recover* (Boolean) - Defines if jobs that are in status *dequeued* should be recovered when starting the queue.  Defaults to `true`.
+* *interval* (number in milliseconds) - Defines the poll interval. Defaults to `5000` ms.
+* *parallel* (Boolean) - Defines whether jobs are executed in parallel. Defaults to `true`.
 
 ### `queue.query(status)`
 

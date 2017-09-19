@@ -110,4 +110,65 @@ describe('microq', function() {
     const dequeuedJobs = await queue.query('dequeued');
     expect(dequeuedJobs).to.have.length(0);
   });
+
+  it('should execute jobs serial if specified', async () => {
+    const queue = microq(connectionUrl);
+    
+    await queue.enqueue('jobName', { foo: 1 });
+    await queue.enqueue('jobName', { foo: 2 });
+
+    return new Promise((resolve, reject) => {
+      queue.on('empty', resolve);
+
+      let runningJobs = 0;
+
+      queue.start({
+        jobName: async () => {
+          if (runningJobs > 0) {
+            reject(new Error('Another job is running...'));
+          }
+
+          runningJobs++;
+
+          await timeout(500);
+          
+          if (runningJobs != 1) {
+            reject(new Error('Another job was started...'));
+          }
+
+          runningJobs--;
+        }
+      }, { interval: 100, parallel: false });
+    });
+  });
+
+  it('should execute jobs in parallel if specified', async () => {
+    const queue = microq(connectionUrl);
+    
+    await queue.enqueue('jobName', { foo: 1 });
+    await queue.enqueue('jobName', { foo: 2 });
+
+    return new Promise((resolve) => {
+      let runningJobs = 0;
+      const startJob = () => {
+        runningJobs++;
+
+        if (runningJobs == 2) {
+          resolve();
+        }
+      }
+
+      queue.start({
+        jobName: async () => {
+          startJob();
+
+          await timeout(500);
+        }
+      }, { interval: 100, parallel: true });
+    });
+  });
 });
+
+function timeout(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
