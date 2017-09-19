@@ -1,6 +1,6 @@
 {
   "name": "microq",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Micro job queue built on mongo",
   "main": "index.js",
   "scripts": {
