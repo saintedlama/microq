@@ -225,8 +225,28 @@ describe('microq', function() {
       queue.on('empty', async () => {
         await queue.cleanup();
 
-        const jobs = jobs.find({});
-        expect(jobs).to.have.length(0);
+        const jobDocuments = await jobs.find({});
+        expect(jobDocuments).to.have.length(0);
+
+        resolve();
+      });
+
+      queue.start({ jobName: resolve }, { interval: 100 });
+    });
+  });
+
+  it('should cleanup with beforeDate specified', async () => {
+    const queue = microq(connectionUrl);
+
+    await queue.enqueue('jobName', { foo: 'bar' });
+    await queue.enqueue('jobName', { foo: 'bar' });
+
+    return new Promise((resolve) => {
+      queue.on('empty', async () => {
+        await queue.cleanup(new Date());
+
+        const jobDocuments = await jobs.find({});
+        expect(jobDocuments).to.have.length(0);
 
         resolve();
       });
