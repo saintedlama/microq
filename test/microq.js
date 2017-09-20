@@ -44,6 +44,35 @@ describe('microq', function() {
     });
   });
 
+  it('should start the queue with default options if not specified ', async () => {
+    const queue = microq(connectionUrl);
+
+    return new Promise((resolve) => {
+      queue.on('empty', resolve);
+
+      queue.start({
+        jobName: () => {}
+      });
+    });
+  });
+
+  it('should not poll for jobs if stopped', async () => {
+    const queue = microq(connectionUrl);
+
+    return new Promise((resolve) => {
+      queue.on('stopped', resolve);
+      queue.on('completed', resolve);
+
+      queue.start({
+        jobName: () => { throw new Error('Should not be processed after queue being stopped!'); }
+      });
+
+      queue.stop();
+
+      queue.enqueue('jobName', {});
+    });
+  });
+
   it('should recover dequeued but not completed or failed jobs', async () => {
     const queue = microq(connectionUrl);
 
@@ -165,6 +194,26 @@ describe('microq', function() {
           await timeout(500);
         }
       }, { interval: 100, parallel: true });
+    });
+  });
+
+  it('should cleanup completed and failed jobs', async () => {
+    const queue = microq(connectionUrl);
+
+    await queue.enqueue('jobName', { foo: 'bar' });
+    await queue.enqueue('jobName', { foo: 'bar' });
+
+    return new Promise((resolve) => {
+      queue.on('empty', async () => {
+        await queue.cleanup();
+
+        const jobs = jobs.find({});
+        expect(jobs).to.have.length(0);
+
+        resolve();
+      });
+
+      queue.start({ jobName: resolve }, { interval: 100 });
     });
   });
 });
