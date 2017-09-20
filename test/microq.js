@@ -90,6 +90,24 @@ describe('microq', function() {
     });
   });
 
+  it('should not recover if specified', async () => {
+    const queue = microq(connectionUrl);
+
+    const job = await queue.enqueue('jobName', { foo: 'bar' });
+    await jobs.update({ _id: job._id}, { $set: { status: 'dequeued' }});
+
+    return new Promise((resolve, reject) => {
+      queue.on('empty', resolve);
+
+      queue.start({
+        jobName: reject
+      }, { 
+        interval: 100,
+        recover: false 
+      });
+    });
+  });
+
   it('should fire empty events if no jobs found in queue', async () => {
     const queue = microq(connectionUrl);
 
