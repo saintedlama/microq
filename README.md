@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/saintedlama/microq.svg?branch=master)](https://travis-ci.org/saintedlama/microq)
 [![Coverage Status](https://coveralls.io/repos/github/saintedlama/microq/badge.svg?branch=master)](https://coveralls.io/github/saintedlama/microq?branch=master)
+[![microq analyzed by Codellama.io](https://app.codellama.io/api/badges/5a00bc3add152a1afbd158c7/a1e3180fd1fea0c819d2f0f89557e411)](https://app.codellama.io/repositories/5a00bc3add152a1afbd158c7)
 
 Microq is a simple but reliable message queue built on mongodb.
 
