@@ -26,11 +26,11 @@
   "homepage": "https://github.com/saintedlama/microq#readme",
   "devDependencies": {
     "chai": "^4.1.2",
-    "coveralls": "^2.13.1",
+    "coveralls": "^3.1.1",
     "cross-env": "^5.0.5",
     "eslint": "^4.6.1",
-    "mocha": "^3.5.3",
-    "nyc": "^11.2.1"
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0"
   },
   "dependencies": {
     "debug": "^3.0.1",
